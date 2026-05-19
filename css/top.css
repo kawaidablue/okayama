@@ -1,0 +1,924 @@
+@charset "UTF-8";
+
+/* ===== js-fadein スタッガー（TOPページ固有要素） ===== */
+.voice__cards .voice__card:nth-child(1) {
+  transition-delay: 0ms;
+}
+.voice__cards .voice__card:nth-child(2) {
+  transition-delay: 100ms;
+}
+.voice__cards .voice__card:nth-child(3) {
+  transition-delay: 200ms;
+}
+.voice__cards .voice__card:nth-child(4) {
+  transition-delay: 300ms;
+}
+.voice__cards .voice__card:nth-child(5) {
+  transition-delay: 400ms;
+}
+
+.top__photos .top__photos__item:nth-child(1) {
+  transition-delay: 100ms;
+}
+.top__photos .top__photos__item:nth-child(2) {
+  transition-delay: 200ms;
+}
+.top__photos .top__photos__item:nth-child(3) {
+  transition-delay: 300ms;
+}
+.top__photos .top__photos__item:nth-child(4) {
+  transition-delay: 400ms;
+}
+.top__photos .top__photos__item:nth-child(5) {
+  transition-delay: 500ms;
+}
+.top__photos .top__photos__item:nth-child(6) {
+  transition-delay: 600ms;
+}
+
+.top {
+  /* 1440px 時を基準(scale=1)として、画面幅に応じて連続的にスケール。
+     上限 1.1 倍で、1584px 以上の大画面では 1.1 倍止まり。
+     1440px を 1440px で割って単位なしの比率を得る点が重要 */
+  --hero-scale: min(1.1, calc(100vw / 1440px));
+  position: relative;
+  padding-bottom: 80px;
+  background-color: #222222;
+}
+.top__inner {
+  position: relative;
+  max-width: 1300px;
+  width: 90%;
+  margin: 0 auto;
+  min-height: calc(900px * var(--hero-scale));
+}
+.top__visual {
+  width: calc(670px * var(--hero-scale));
+  text-align: center;
+  padding-top: calc(125px * var(--hero-scale));
+  margin: 0 auto;
+  position: relative;
+  z-index: 5;
+}
+.top__visual img {
+  width: 100%;
+}
+
+/* ロゴのドラマチック登場：拡大＋ブラー解除＋フェードイン */
+.top__visual__logo {
+  display: block;
+  -webkit-animation: logoEntrance 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation: logoEntrance 1.4s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.top__visual__logo img {
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+@-webkit-keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(1.35);
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    -webkit-filter: blur(0);
+    filter: blur(0);
+  }
+}
+
+@keyframes logoEntrance {
+  0% {
+    opacity: 0;
+    transform: scale(1.35);
+    -webkit-filter: blur(8px);
+    filter: blur(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    -webkit-filter: blur(0);
+    filter: blur(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top__visual__logo {
+    -webkit-animation: none;
+    animation: none;
+  }
+}
+
+.top__visual__map {
+  width: calc(320px * var(--hero-scale));
+  text-align: center;
+  margin: calc(40px * var(--hero-scale)) auto 0 auto;
+}
+.top__visual__map img {
+  width: 100%;
+  height: auto;
+  -webkit-filter: drop-shadow(0 0 30px rgba(255, 120, 150, 0.4));
+  filter: drop-shadow(0 0 30px rgba(255, 120, 150, 0.4));
+}
+.top__lead {
+  position: absolute;
+  top: 10%;
+  left: 3%;
+  z-index: 6;
+  font-family: "Lato", sans-serif;
+  font-weight: 400;
+  font-style: italic;
+  font-size: clamp(8px, calc(8px + 0.4167vw), 14px);
+  line-height: 1.9;
+  color: #ffb3c9;
+  letter-spacing: 0.1em;
+  text-align: left;
+  transform: skewY(-15deg);
+}
+
+/* js-fadein の transform を上書き：fade と skew を両立 */
+.top__lead.js-fadein {
+  transform: translateY(30px) skewY(-15deg);
+}
+.top__lead.js-fadein.is-visible {
+  transform: translateY(0) skewY(-15deg);
+}
+.top__photos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  list-style: none; /* <ul>のドット消す */
+  padding: 0; /* <ul>のデフォルトpadding消す */
+  margin: 0;
+}
+.top__photos__item {
+  position: absolute; /* 親 .top__photos が relative=absoluteの基準 */
+  list-style: none;
+  overflow: hidden; /* はみ出した画像を切る */
+  pointer-events: auto; /* 親で none にしてるので個別に有効化 */
+  transition:
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    z-index 0s;
+}
+
+.top__photos__item:hover {
+  transform: scale(1.1) rotate(2deg);
+  z-index: 10;
+}
+
+.top__photos__item img,
+.top__photos__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover; /* ⭐ 重要 */
+  -webkit-clip-path: polygon(100% 0%, 100% 80%, 0% 100%, 0% 20%);
+  clip-path: polygon(100% 0%, 100% 80%, 0% 100%, 0% 20%);
+}
+
+.top__photos__placeholder {
+  background: linear-gradient(135deg, #555 0%, #333 100%);
+}
+/* ===== 最適解レイアウト：7 枚で balanced chaos =====
+ * 表示は p1〜p6 + p8 の 7 枚（p7 は top__lead と衝突するため非表示）
+ * 写真同士は重ならず、メインロゴ+地図の中央ゾーンも避ける
+ * 縦位置を意図的にズラして「等間隔で真面目」を回避
+ */
+
+/* 非表示：p7 は top__lead と衝突、p6 は 6 枚構成のため */
+.top__photos__item--p6,
+.top__photos__item--p7 {
+  display: none;
+}
+
+/* サイズはすべて var(--hero-scale) を掛けて、SP でも比率が固定で縮む */
+
+/* p1: 上中央（基準） */
+.top__photos__item--p1 {
+  top: -6%;
+  left: 50%;
+  width: calc(180px * var(--hero-scale));
+  height: calc(229px * var(--hero-scale));
+}
+
+/* p2: 上右 */
+.top__photos__item--p2 {
+  top: 3%;
+  right: 3%;
+  width: calc(172px * var(--hero-scale));
+  height: calc(229px * var(--hero-scale));
+}
+
+/* p3: 左中・主役 */
+.top__photos__item--p3 {
+  top: 37%;
+  left: 0;
+  width: calc(300px * var(--hero-scale));
+  height: calc(360px * var(--hero-scale));
+}
+
+/* p4: 左下 */
+.top__photos__item--p4 {
+  top: 67%;
+  left: 2%;
+  width: calc(240px * var(--hero-scale));
+  height: calc(300px * var(--hero-scale));
+}
+
+/* p5: 右中（小ぶり） */
+.top__photos__item--p5 {
+  top: 38%;
+  right: 22%;
+  width: calc(160px * var(--hero-scale));
+  height: calc(200px * var(--hero-scale));
+}
+
+/* p8: 右下 */
+.top__photos__item--p8 {
+  top: 50%;
+  right: 0%;
+  width: calc(250px * var(--hero-scale));
+  height: calc(300px * var(--hero-scale));
+}
+
+/* p6: 非表示中だがサイズも一応 scale 対応 */
+.top__photos__item--p6 {
+  top: 73%;
+  right: 6%;
+  width: calc(185px * var(--hero-scale));
+  height: calc(230px * var(--hero-scale));
+}
+
+/* ===== 下部の見出しブロック ===== */
+.top__intro {
+  position: relative;
+  z-index: 4;
+  margin: 20px auto 0;
+  max-width: 600px;
+  text-align: center;
+  padding-top: 100px;
+}
+
+.top__intro::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: 70px;
+  background-color: #fff;
+  -webkit-animation: barFloat 2.4s ease-in-out infinite;
+  animation: barFloat 2.4s ease-in-out infinite;
+}
+
+@-webkit-keyframes barFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(18px);
+  }
+}
+
+@keyframes barFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(18px);
+  }
+}
+
+/* アニメ無効化設定の人には停止 */
+@media (prefers-reduced-motion: reduce) {
+  .top__intro::before {
+    -webkit-animation: none;
+    animation: none;
+  }
+}
+
+.top__intro__title {
+  font-size: 32px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  margin-bottom: 40px;
+}
+
+.top__intro__text {
+  font-size: 20px;
+  line-height: 3;
+  font-weight: 400;
+  letter-spacing: 0.2em;
+}
+
+/* 本文を行単位でゆっくり順番にフェードイン（タイプライター完了で .is-text-ready が付く） */
+.top__intro__text .line {
+  display: block;
+  opacity: 0;
+  transform: translateY(16px);
+  transition:
+    opacity 0.9s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.top__intro.is-text-ready .top__intro__text .line {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top__intro__text .line {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===== SPECIAL VOICE セクション ===== */
+.voice {
+  position: relative;
+  padding: 0 120px;
+}
+
+/* 背景は疑似要素で。上下とも斜めにカット（平行四辺形） */
+.voice::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: #000000;
+  z-index: 0;
+  -webkit-clip-path: polygon(0 18%, 100% 0, 100% 82%, 0 100%);
+  clip-path: polygon(0 18%, 100% 0, 100% 82%, 0 100%);
+}
+
+/* 奇数 Group (1, 3): #000 */
+.voice--g1::before,
+.voice--g3::before {
+  background-color: #000000;
+}
+
+/* 偶数 Group (2, 4): #222 */
+.voice--g2::before,
+.voice--g4::before {
+  background-color: #222222;
+}
+.voice--g2,
+.voice--g3,
+.voice--g4 {
+  margin-top: -200px;
+}
+.voice__inner {
+  position: relative;
+  z-index: 1;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.voice--g1 .voice__inner {
+  padding: 5% 0 23% 0;
+}
+.voice--g2 .voice__inner {
+  padding: 0 5% 23% 0;
+}
+.voice--g3 .voice__inner {
+  padding: 5% 5% 23% 0;
+}
+.voice--g4 .voice__inner {
+  padding: 0 5% 5% 0;
+}
+/* ヘッダー（GROUPバッジ + タイトル） */
+.voice__head {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+/* GROUPバッジ（ピンクの縦長ラベル） */
+.voice__group {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100px;
+  height: 140px;
+  padding: 18px 0;
+  background-color: #ffb3c9;
+  margin-bottom: 32px;
+  box-sizing: border-box;
+}
+
+.voice__group__label {
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  text-align: center;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #000;
+  margin-bottom: 6px;
+}
+
+.voice__group__num {
+  font-family: "Lato", sans-serif;
+  font-size: 90px;
+  font-weight: 700;
+  line-height: 0.9;
+  color: #000;
+}
+.voice__title {
+  font-family: "Lato", sans-serif;
+  font-size: 60px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  line-height: 1;
+}
+
+/* ===== カード一覧 ===== */
+.voice__cards {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 40px 30px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.voice__card {
+  /* 3列レイアウト: gap 30px × 2 = 60px を全幅から引いた1/3 */
+  width: calc((100% - 60px) / 3);
+}
+
+.voice__card {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffb3c9;
+  cursor: pointer;
+  transition:
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.voice__card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
+}
+
+/* カードの中身を <a> で囲んでクリック可能に */
+.voice__card__link {
+  display: block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.voice__card__img {
+  position: relative;
+  margin: 0;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: #333;
+}
+
+.voice__card__img img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.6s ease;
+}
+
+.voice__card:hover .voice__card__img img {
+  transform: scale(1.08);
+}
+
+/* READ MORE オーバーレイ */
+.voice__card__more {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-family: "Lato", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s ease;
+  pointer-events: none;
+}
+
+.voice__card:hover .voice__card__more {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.voice__card__placeholder {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, #000000 0%, #000000 100%);
+}
+
+.voice__card__info {
+  padding: 18px 20px 20px;
+  color: #000;
+}
+
+.voice__card__info__en {
+  font-family: "Lato", sans-serif;
+  font-size: 40px;
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.02em;
+  margin-bottom: 6px;
+}
+
+.voice__card__info__jp {
+  font-size: 25px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  margin-bottom: 15px;
+}
+
+.voice__card__info__job {
+  font-size: 13px;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+  color: #000;
+}
+
+/* ===== ABOUT RADIO MOMO ===== */
+.about {
+  padding: 100px 5% 120px;
+  color: #fff;
+  background-color: #222222;
+}
+
+/* バナー：ロゴ + 周波数 + 開局年 */
+.about__banner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 32px;
+  align-items: center;
+  max-width: 1000px;
+  margin: 0 auto 60px;
+  padding: 24px 40px;
+  background: linear-gradient(135deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-left: 4px solid #ffb3c9;
+  border-radius: 2px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.about__banner__logo {
+  background-color: #fff;
+  padding: 12px 20px;
+}
+
+.about__banner__logo img {
+  width: 160px;
+  height: auto;
+  display: block;
+}
+
+.about__banner__info {
+  text-align: left;
+}
+
+.about__banner__freq {
+  font-family: "Lato", sans-serif;
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #ffb3c9;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.about__banner__catch {
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.about__banner__since {
+  text-align: right;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+  padding-left: 32px;
+}
+
+.about__banner__since__label {
+  display: block;
+  font-family: "Lato", sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 4px;
+}
+
+.about__banner__since__year {
+  display: block;
+  font-family: "Lato", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  line-height: 1;
+}
+
+@media (max-width: 768px) {
+  .about__banner {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding: 24px;
+    gap: 20px;
+  }
+  .about__banner__logo {
+    margin: 0 auto;
+  }
+  .about__banner__info {
+    text-align: center;
+  }
+  .about__banner__since {
+    border-left: none;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    padding-left: 0;
+    padding-top: 16px;
+    text-align: center;
+  }
+}
+
+.about__inner {
+  display: grid;
+  grid-template-columns: 1fr 1.4fr;
+  gap: 60px;
+  max-width: 1000px;
+  margin: 0 auto;
+  align-items: start;
+}
+
+.about__col--left {
+  text-align: left;
+}
+
+.about__col--right {
+  text-align: left;
+}
+
+.about__title {
+  font-family: "Lato", sans-serif;
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  margin-bottom: 12px;
+}
+
+.about__subtitle {
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  margin-bottom: 24px;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about__freq {
+  display: inline-block;
+  font-family: "Lato", sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: #ffb3c9;
+  border: 1px solid #ffb3c9;
+  padding: 6px 18px;
+}
+
+.about__text {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: 0.05em;
+}
+
+.about__text--note {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.75);
+  margin-bottom: 24px;
+}
+
+.about__text--note strong {
+  color: #ffb3c9;
+  font-weight: 700;
+}
+
+.about__link {
+  display: inline-block;
+  margin-top: 8px;
+  font-family: "Lato", sans-serif;
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: #fff;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+  padding-bottom: 4px;
+  transition:
+    color 0.2s,
+    border-color 0.2s;
+}
+
+.about__link:hover {
+  color: #ffb3c9;
+  border-color: #ffb3c9;
+}
+
+/* タブレット以下では1カラムに */
+@media (max-width: 768px) {
+  .about__inner {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+}
+/* =====================================================
+   SP/タブレット用調整
+   写真・ロゴ・地図のサイズは --hero-scale で自動連動するので
+   ここでは触らない。タイポグラフィや voice セクションだけ調整。
+   ===================================================== */
+
+/* 中サイズ画面：voice セクションの横余白だけ詰める */
+@media (max-width: 1100px) {
+  .voice {
+    padding: 0 60px;
+  }
+  .top__lead {
+    top: 5%;
+    left: 3%;
+  }
+}
+
+/* タブレット以下：PC の chaos 配置のまま縮小（--hero-scale で連動） */
+@media (max-width: 760px) {
+  .top {
+    padding-bottom: 60px;
+    /* 760px を基準(scale=1) に、それ以下では画面幅に比例して縮小 */
+    --hero-scale: min(1, calc(100vw / 760px));
+  }
+  .top__inner {
+    width: 92%;
+  }
+  .top__lead {
+    top: 7%;
+    left: 0;
+  }
+  .top__visual {
+    padding-top: 90px;
+    width: 65%;
+  }
+  .top__visual__map {
+    width: 50%;
+  }
+  .top__photos__item--p1 {
+    top: -8%;
+    left: 62%;
+    width: calc(120px * var(--hero-scale));
+    height: calc(160px * var(--hero-scale));
+  }
+  .top__photos__item--p2 {
+    top: 0;
+    right: 0;
+    width: calc(115px * var(--hero-scale));
+    height: calc(153px * var(--hero-scale));
+  }
+  .top__photos__item--p3 {
+    top: 40%;
+    left: 0;
+    width: calc(180px * var(--hero-scale));
+    height: calc(216px * var(--hero-scale));
+  }
+  .top__photos__item--p4 {
+    top: 62%;
+    left: 5%;
+    width: calc(160px * var(--hero-scale));
+    height: calc(200px * var(--hero-scale));
+  }
+  .top__photos__item--p5 {
+    top: 33%;
+    right: 7%;
+    width: calc(160px * var(--hero-scale));
+    height: calc(200px * var(--hero-scale));
+  }
+  .top__photos__item--p8 {
+    top: 52%;
+    right: 2%;
+    width: calc(180px * var(--hero-scale));
+    height: calc(216px * var(--hero-scale));
+  }
+  .top__intro {
+    max-width: 90%;
+    padding-top: 100px;
+    margin-top: 40px;
+  }
+  .top__intro::before {
+    height: 70px;
+  }
+  .top__intro__title {
+    font-size: 22px;
+    margin-bottom: 24px;
+  }
+  .top__intro__text {
+    font-size: 13px;
+    line-height: 2.2;
+    letter-spacing: 0.1em;
+  }
+
+  /* SPECIAL VOICE セクション */
+  .voice {
+    padding: 0 5%;
+  }
+  .voice--g1 .voice__inner,
+  .voice--g2 .voice__inner,
+  .voice--g3 .voice__inner,
+  .voice--g4 .voice__inner {
+    padding: 8% 0 28% 0;
+  }
+  .voice--g2,
+  .voice--g3,
+  .voice--g4 {
+    margin-top: -120px;
+  }
+  .voice::before {
+    -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+    clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  }
+  .voice__group {
+    width: 76px;
+    height: 110px;
+    margin-bottom: 20px;
+  }
+  .voice__group__label {
+    font-size: 10px;
+  }
+  .voice__group__num {
+    font-size: 64px;
+  }
+  .voice__title {
+    font-size: 32px;
+  }
+  .voice__head {
+    margin-bottom: 36px;
+  }
+  .voice__cards {
+    gap: 20px 16px;
+  }
+  .voice__card {
+    width: calc((100% - 16px) / 2);
+  }
+  .voice__card__info {
+    padding: 12px 14px 14px;
+  }
+  .voice__card__info__en {
+    font-size: 24px;
+  }
+  .voice__card__info__jp {
+    font-size: 16px;
+  }
+  .voice__card__info__job {
+    font-size: 11px;
+  }
+}
+
+/* スマートフォン（480px 以下） */
+@media (max-width: 480px) {
+  .voice__cards {
+    gap: 24px;
+  }
+  .voice__card {
+    width: 100%;
+    max-width: 320px;
+  }
+  .voice__title {
+    font-size: 24px;
+  }
+  .top__intro__title {
+    font-size: 18px;
+  }
+  .top__intro__text {
+    font-size: 12px;
+  }
+  .about {
+    padding: 60px 5% 80px;
+  }
+}

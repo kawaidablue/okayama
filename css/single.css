@@ -1,0 +1,382 @@
+@charset "UTF-8";
+
+/* ===== 読書進捗バー（画面上部に固定） ===== */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 3px;
+  width: 0;
+  background: linear-gradient(90deg, #ffb3c9 0%, #ff8db5 100%);
+  box-shadow: 0 0 8px rgba(255, 179, 201, 0.5);
+  z-index: 1000;
+  transition: width 0.1s ease-out;
+}
+
+/* ===== タイプライター風アニメ（.js-typewriter） ===== */
+.js-typewriter .char {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.4em);
+  transition:
+    opacity 0.45s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.45s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.js-typewriter.is-typing .char {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js-typewriter .char {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===== 本文段落 =====
+   タイプライター完了で親 .single__story に .is-text-ready が付いたら、
+   全段落を一気にフェードイン。 */
+.single__story__text > p {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 0.4s ease-out,
+    transform 0.4s ease-out;
+}
+
+.single__story.is-text-ready .single__story__text > p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .single__story__text > p {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ===== Single（記事詳細）ページ ===== */
+.single {
+  background-color: #222;
+  color: #fff;
+  padding-bottom: 120px;
+  overflow: hidden;
+}
+
+/* ----- ヒーロー（人物紹介） ----- */
+.single__hero {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 80px 5% 120px;
+}
+
+.single__hero__photo {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  -webkit-clip-path: polygon(0 12%, 100% 0, 100% 88%, 0 100%);
+  clip-path: polygon(0 12%, 100% 0, 100% 88%, 0 100%);
+}
+
+.single__hero__photo img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  display: block;
+}
+
+.single__hero__info {
+  color: #fff;
+}
+
+.single__hero__num {
+  font-family: "Lato", sans-serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #fff;
+  line-height: 1.5;
+  margin-bottom: 12px;
+}
+
+.single__hero__en {
+  font-family: "Lato", sans-serif;
+  font-size: 38px;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: #ffb3c9;
+  line-height: 1.1;
+  margin-bottom: 24px;
+}
+
+.single__hero__jp {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.single__hero__job {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 15px 0 30px;
+}
+
+.single__hero__lead {
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ----- STORY セクション ----- */
+.single__story {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 80px 5%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* MY STORY ラベル（SVG画像） */
+.single__story__label {
+  display: block;
+  width: 270px;
+  height: auto;
+  margin: 0 0 25px;
+}
+
+.single__story__title {
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  line-height: 1.5;
+  text-align: center;
+  color: #fff;
+  margin-bottom: 56px;
+}
+
+.single__story__body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 50px;
+  align-items: start;
+}
+
+.single__story__text {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.single__story__text p {
+  font-size: 14px;
+  line-height: 2;
+  letter-spacing: 0.05em;
+  color: rgba(255, 255, 255, 0.88);
+}
+
+/* テキストのみセクション用：中央寄せで広めの幅 */
+.single__story--text .single__story__title {
+  text-align: center;
+}
+.single__story__text--wide {
+  max-width: 880px;
+  margin: 0 auto;
+  gap: 18px;
+}
+.single__story__text--wide p {
+  font-size: 15px;
+  line-height: 2.1;
+}
+
+.single__story__img {
+  width: 100%;
+  overflow: hidden;
+}
+
+.single__story__img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.single__photos {
+  margin: 80px 0;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.single__photos.slick-initialized {
+  opacity: 1;
+}
+
+/* slick のスライド間ギャップ */
+.single__photos .slick-list {
+  margin: 0 -10px;
+}
+
+.single__photos .slick-slide {
+  outline: none;
+}
+
+/* track のアニメーションを linear に強制（slick デフォルト ease を上書き） */
+.single__photos .slick-track {
+  display: flex;
+  align-items: center;
+}
+
+.single__photos__item {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+}
+
+.single__photos__item img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+  object-fit: cover;
+  display: block;
+}
+
+/* ----- 一覧へ戻る ----- */
+.single__back {
+  text-align: center;
+  margin-top: 80px;
+}
+
+.single__back__link {
+  display: inline-block;
+  color: #fff;
+  font-family: "Lato", sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-decoration: none;
+  padding: 12px 30px;
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition:
+    color 0.25s,
+    border-color 0.25s,
+    background-color 0.25s;
+}
+
+.single__back__link:hover {
+  color: #000;
+  background-color: #ffb3c9;
+  border-color: #ffb3c9;
+}
+
+/* ===== レスポンシブ ===== */
+@media (max-width: 900px) {
+  .single__hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    padding: 48px 5% 64px;
+  }
+
+  .single__hero__photo {
+    max-width: 360px;
+    margin: 0 auto;
+  }
+
+  .single__hero__num {
+    font-size: 22px;
+  }
+  .single__hero__en {
+    font-size: 28px;
+  }
+  .single__hero__jp {
+    font-size: 18px;
+  }
+  .single__hero__job {
+    font-size: 12px;
+    margin: 10px 0 24px;
+  }
+
+  .single__story {
+    padding: 56px 5%;
+  }
+
+  .single__story__label {
+    width: 200px;
+    margin-bottom: 18px;
+  }
+
+  .single__story__title {
+    font-size: 22px;
+    margin-bottom: 36px;
+  }
+
+  .single__story__body,
+  .single__story__body--reverse {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+
+  /* スマホでは画像を上、テキストを下に統一 */
+  .single__story__body--reverse .single__story__img {
+    order: -1;
+  }
+
+  /* テキスト用セクション */
+  .single__story__text--wide p {
+    font-size: 14px;
+    line-height: 2;
+  }
+
+  /* 写真スライダー */
+  .single__photos {
+    margin: 48px 0;
+  }
+  .single__photos .slick-list {
+    margin: 0 -6px;
+  }
+  .single__photos .slick-slide {
+    padding: 0 6px;
+  }
+
+  /* 一覧へ戻る */
+  .single__back {
+    margin-top: 48px;
+  }
+}
+
+/* スマホ（480px 以下） */
+@media (max-width: 480px) {
+  .single__hero {
+    padding: 32px 5% 48px;
+    gap: 24px;
+  }
+  .single__hero__en {
+    font-size: 24px;
+  }
+  .single__hero__lead {
+    font-size: 13px;
+  }
+  .single__story__label {
+    width: 170px;
+  }
+  .single__story__title {
+    font-size: 18px;
+    margin-bottom: 28px;
+  }
+  .single__back__link {
+    font-size: 12px;
+    padding: 10px 24px;
+  }
+}
