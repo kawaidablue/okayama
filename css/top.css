@@ -377,7 +377,7 @@
 .voice--g2,
 .voice--g3,
 .voice--g4 {
-  margin-top: -200px;
+  margin-top: -220px;
 }
 .voice__inner {
   position: relative;
@@ -386,16 +386,16 @@
   margin: 0 auto;
 }
 .voice--g1 .voice__inner {
-  padding: 5% 0 23% 0;
+  padding: 80px 0 300px 0;
 }
 .voice--g2 .voice__inner {
-  padding: 0 5% 23% 0;
+  padding: 0 0 280px 0;
 }
 .voice--g3 .voice__inner {
-  padding: 5% 5% 23% 0;
+  padding: 70px 0 290px 0;
 }
 .voice--g4 .voice__inner {
-  padding: 0 5% 5% 0;
+  padding: 0 0 50px 0;
 }
 /* ヘッダー（GROUPバッジ + タイトル） */
 .voice__head {
@@ -543,7 +543,8 @@
 
 .voice__card__info__en {
   font-family: "Lato", sans-serif;
-  font-size: 40px;
+  /* 480px:24px → 1440px:40px の線形補完 */
+  font-size: clamp(24px, calc(16px + 1.6667vw), 40px);
   font-weight: 400;
   line-height: 0.95;
   letter-spacing: 0.02em;
@@ -551,14 +552,16 @@
 }
 
 .voice__card__info__jp {
-  font-size: 25px;
+  /* 480px:16px → 1440px:25px の線形補完 */
+  font-size: clamp(16px, calc(11.5px + 0.9375vw), 25px);
   font-weight: 700;
   letter-spacing: 0.05em;
   margin-bottom: 15px;
 }
 
 .voice__card__info__job {
-  font-size: 13px;
+  /* 480px:11px → 1440px:13px の線形補完 */
+  font-size: clamp(11px, calc(10px + 0.2083vw), 13px);
   font-weight: bold;
   letter-spacing: 0.05em;
   color: #000;
@@ -763,9 +766,19 @@
   .voice {
     padding: 0 60px;
   }
+  .voice::before {
+    -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+    clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+  }
   .top__lead {
     top: 5%;
     left: 3%;
+  }
+  .voice--g1 .voice__inner {
+    padding: 0 0 300px 0;
+  }
+  .voice--g3 .voice__inner {
+    padding: 20px 0 290px 0;
   }
 }
 
@@ -848,17 +861,6 @@
   .voice {
     padding: 0 5%;
   }
-  .voice--g1 .voice__inner,
-  .voice--g2 .voice__inner,
-  .voice--g3 .voice__inner,
-  .voice--g4 .voice__inner {
-    padding: 8% 0 28% 0;
-  }
-  .voice--g2,
-  .voice--g3,
-  .voice--g4 {
-    margin-top: -120px;
-  }
   .voice::before {
     -webkit-clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
     clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
@@ -889,14 +891,11 @@
   .voice__card__info {
     padding: 12px 14px 14px;
   }
-  .voice__card__info__en {
-    font-size: 24px;
+  .voice--g1 .voice__inner {
+    padding: 50px 0 300px 0;
   }
-  .voice__card__info__jp {
-    font-size: 16px;
-  }
-  .voice__card__info__job {
-    font-size: 11px;
+  .voice--g2 .voice__inner {
+    padding: 30px 0 280px 0;
   }
 }
 
@@ -915,10 +914,38 @@
   .top__intro__title {
     font-size: 18px;
   }
+  .top__lead {
+    font-size: 8px;
+  }
   .top__intro__text {
     font-size: 12px;
   }
+  .top__intro::before {
+    height: 65px;
+  }
+  .top__intro {
+    max-width: 100%;
+    padding-top: 100px;
+    margin-top: 0;
+  }
+  .voice::before {
+    width: 100%;
+    -webkit-clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+    clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+  }
+  .top__photos__item--p4 {
+    top: 57%;
+  }
+  .top__photos__item--p8 {
+    top: 49%;
+  }
   .about {
     padding: 60px 5% 80px;
+  }
+}
+@media (max-width: 380px) {
+  .top__visual {
+    padding-top: 90px;
+    width: 80%;
   }
 }
