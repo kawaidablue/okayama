@@ -346,11 +346,6 @@
   .single__photos .slick-list {
     margin: 0 -6px;
   }
-  .single__photos .slick-slide {
-    padding: 0 6px;
-  }
-
-  /* 一覧へ戻る */
   .single__back {
     margin-top: 48px;
   }
